@@ -13,6 +13,7 @@ function App() {
         <header className="App-header">
           <BrowserRouter>
             <Routes>
+            <Route element={<UserDashboard />} path="/" />
               <Route element={<UserDashboard />} path="/dashboard" />
             </Routes>
           </BrowserRouter>
