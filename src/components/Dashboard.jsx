@@ -26,7 +26,7 @@ const UserDashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [severity, setSeverity] = useState('error');
+  const [severity, setSeverity] = useState("error");
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -64,7 +64,7 @@ const UserDashboard = () => {
         );
         if (!response.ok) {
           setIsLoading(false);
-          setSeverity('error');
+          setSeverity("error");
           throw new Error("Failed to update user");
         }
       } else {
@@ -83,9 +83,9 @@ const UserDashboard = () => {
           setIsLoading(false);
           throw new Error("Failed to add user");
         }
-        
-        setError('User Saved');
-        setSeverity('success');
+
+        setError("User Saved");
+        setSeverity("success");
         setIsLoading(false);
       }
 
@@ -117,14 +117,14 @@ const UserDashboard = () => {
       );
       if (!response.ok) {
         setIsLoading(false);
-        setSeverity('error');
+        setSeverity("error");
         throw new Error("Failed to delete user");
       }
       // Simulate deletion for JSONPlaceholder
       setUsers(users.filter((user) => user.id !== userId));
       setIsLoading(false);
-      setSeverity('error');
-      setError('User deleted');
+      setSeverity("error");
+      setError("User deleted");
     } catch (err) {
       setError(err.message);
     }
@@ -227,61 +227,71 @@ const UserDashboard = () => {
       </Paper>
 
       {error && (
-        <Alert severity={severity} sx={{ mb: 4 }} onClose={() => { setError(null)}}>
+        <Alert
+          severity={severity}
+          sx={{ mb: 4 }}
+          onClose={() => {
+            setError(null);
+          }}
+        >
           {error}
         </Alert>
       )}
 
-      <Grid container spacing={3}>
-        {users.map((user) => (
-          <Grid item xs={12} key={user.id}>
-            <Card>
-              <CardContent>
-                <Grid
-                  container
-                  alignItems="center"
-                  justifyContent="space-between"
-                >
-                  <Grid item xs={9}>
-                    <Typography variant="h6">
-                      {user.firstName} {user.lastName}
-                    </Typography>
-                    <Typography color="textSecondary">{user.email}</Typography>
-                    <Typography color="textSecondary">
-                      {user.department}
-                    </Typography>
+      <div className="userlist-wrapper">
+        <Grid container spacing={1}>
+          {users.map((user) => (
+            <Grid item xs={12} key={user.id}>
+              <Card>
+                <CardContent>
+                  <Grid
+                    container
+                    alignItems="center"
+                    justifyContent="space-between"
+                  >
+                    <Grid item xs={9}>
+                      <Typography variant="h6">
+                        {user.firstName} {user.lastName}
+                      </Typography>
+                      <Typography color="textSecondary">
+                        {user.email}
+                      </Typography>
+                      <Typography color="textSecondary">
+                        {user.department}
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <Box display="flex" gap={1}>
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          startIcon={<EditIcon />}
+                          onClick={() => {
+                            setSelectedUser(user);
+                            setFormData(user);
+                            setIsEditing(true);
+                          }}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          color="error"
+                          size="small"
+                          startIcon={<DeleteIcon />}
+                          onClick={() => handleDelete(user.id)}
+                        >
+                          Delete
+                        </Button>
+                      </Box>
+                    </Grid>
                   </Grid>
-                  <Grid item>
-                    <Box display="flex" gap={1}>
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        startIcon={<EditIcon />}
-                        onClick={() => {
-                          setSelectedUser(user);
-                          setFormData(user);
-                          setIsEditing(true);
-                        }}
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        variant="outlined"
-                        color="error"
-                        size="small"
-                        startIcon={<DeleteIcon />}
-                        onClick={() => handleDelete(user.id)}
-                      >
-                        Delete
-                      </Button>
-                    </Box>
-                  </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </div>
     </Container>
   );
 };
