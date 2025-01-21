@@ -81,6 +81,10 @@ const UserDashboard = () => {
           setSeverity("error");
           throw new Error("Failed to update user");
         }
+
+        setError("User details edited!");
+        setSeverity("success");
+        setIsLoading(false);
       } else {
         setIsLoading(true);
         const response = await fetch(
@@ -239,7 +243,10 @@ const UserDashboard = () => {
           </Grid>
         </form>
       </Paper>
-
+    {
+        // used to alert the actions that have been triggered like
+        // edited or deleted users
+    }
       {error && (
         <Alert
           severity={severity}

@@ -1,3 +1,17 @@
+/**
+ * 
+ * 
+ * @param {*} setHasMore 
+ * @param {*} setError 
+ * @param {*} setIsLoading 
+ * @param {*} USERS_PER_PAGE 
+ * @param {*} setSeverity 
+ * 
+ * The function intiallu used to trigger loading a few users based on
+ * the value of USER_PER_PAGE.
+ */
+
+
 export const fetchInitialUsers = async (
   setUsers,
   setHasMore,

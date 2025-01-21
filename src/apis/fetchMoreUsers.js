@@ -1,3 +1,18 @@
+/**
+ * 
+ * @param page 
+ * @param {*} setUsers 
+ * @param {*} setPage 
+ * @param {*} setHasMore 
+ * @param {*} setError 
+ * @param {*} USERS_PER_PAGE 
+ * 
+ * Function used to fetch users as we scroll down in our list.
+ * To be used in infinite scrolling react component which
+ * wraps our page.
+ */
+
+
 export const fetchMoreUsers = async (
   page,
   setUsers,

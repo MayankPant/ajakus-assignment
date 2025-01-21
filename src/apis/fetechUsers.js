@@ -1,3 +1,13 @@
+/**
+ * 
+ * @param setUsers 
+ * @param {*} setError 
+ * @param {*} setIsLoading 
+ * @param {*} setSeverity 
+ * Function allows to fetch all users and set the values of
+ * some setters based on our parameters.
+ */
+
 export async function fetchUsers(setUsers, setError, setIsLoading, setSeverity){
     try {
         const response = await fetch('https://jsonplaceholder.typicode.com/users');
