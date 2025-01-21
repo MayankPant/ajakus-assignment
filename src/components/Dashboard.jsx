@@ -18,7 +18,9 @@ import {
   Delete as DeleteIcon,
   Add as AddIcon,
 } from "@mui/icons-material";
-import { fetchUsers } from "../apis/fetechUsers";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { fetchMoreUsers } from "../apis/fetchMoreUsers";
+import { fetchInitialUsers } from "../apis/fetchInitialUsers";
 
 const UserDashboard = () => {
   const [users, setUsers] = useState([]);
@@ -27,7 +29,12 @@ const UserDashboard = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [severity, setSeverity] = useState("error");
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const USERS_PER_PAGE = 4;
 
+
+  
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -36,7 +43,14 @@ const UserDashboard = () => {
   });
 
   useEffect(() => {
-    fetchUsers(setUsers, setError, setIsLoading, setSeverity);
+    fetchInitialUsers(
+      setUsers,
+      setHasMore,
+      setError,
+      setIsLoading,
+      USERS_PER_PAGE,
+      setSeverity
+    );
   }, []);
 
   const handleInputChange = (e) => {
@@ -238,60 +252,78 @@ const UserDashboard = () => {
         </Alert>
       )}
 
-      <div className="userlist-wrapper">
-        <Grid container spacing={1}>
-          {users.map((user) => (
-            <Grid item xs={12} key={user.id}>
-              <Card>
-                <CardContent>
-                  <Grid
-                    container
-                    alignItems="center"
-                    justifyContent="space-between"
-                  >
-                    <Grid item xs={9}>
-                      <Typography variant="h6">
-                        {user.firstName} {user.lastName}
-                      </Typography>
-                      <Typography color="textSecondary">
-                        {user.email}
-                      </Typography>
-                      <Typography color="textSecondary">
-                        {user.department}
-                      </Typography>
+      <InfiniteScroll
+        dataLength={users.length}
+        next={() => {
+            fetchMoreUsers(page, setUsers, setPage, setHasMore, setError, USERS_PER_PAGE);
+          }}
+        hasMore={hasMore}
+        loader={ hasMore &&
+          <Box display="flex" justifyContent="center" p={2}>
+            <CircularProgress />
+          </Box>
+        }
+        endMessage={
+          <Typography textAlign="center" color="textSecondary" py={2}>
+            {}
+          </Typography>
+        }
+      >
+        <div className="userlist-wrapper">
+          <Grid container spacing={1}>
+            {users.map((user) => (
+              <Grid item xs={12} key={user.id}>
+                <Card>
+                  <CardContent>
+                    <Grid
+                      container
+                      alignItems="center"
+                      justifyContent="space-between"
+                    >
+                      <Grid item xs={9}>
+                        <Typography variant="h6">
+                          {user.firstName} {user.lastName}
+                        </Typography>
+                        <Typography color="textSecondary">
+                          {user.email}
+                        </Typography>
+                        <Typography color="textSecondary">
+                          {user.department}
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <Box display="flex" gap={1}>
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            startIcon={<EditIcon />}
+                            onClick={() => {
+                              setSelectedUser(user);
+                              setFormData(user);
+                              setIsEditing(true);
+                            }}
+                          >
+                            Edit
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            color="error"
+                            size="small"
+                            startIcon={<DeleteIcon />}
+                            onClick={() => handleDelete(user.id)}
+                          >
+                            Delete
+                          </Button>
+                        </Box>
+                      </Grid>
                     </Grid>
-                    <Grid item>
-                      <Box display="flex" gap={1}>
-                        <Button
-                          variant="outlined"
-                          size="small"
-                          startIcon={<EditIcon />}
-                          onClick={() => {
-                            setSelectedUser(user);
-                            setFormData(user);
-                            setIsEditing(true);
-                          }}
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          variant="outlined"
-                          color="error"
-                          size="small"
-                          startIcon={<DeleteIcon />}
-                          onClick={() => handleDelete(user.id)}
-                        >
-                          Delete
-                        </Button>
-                      </Box>
-                    </Grid>
-                  </Grid>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </div>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </div>
+      </InfiniteScroll>
     </Container>
   );
 };
