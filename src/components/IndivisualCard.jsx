@@ -21,6 +21,7 @@ const IndivisualCard = ({
   setFormData,
   setIsEditing,
   handleDelete,
+  resetForm
 }) => {
   return (
     <CardContent>
@@ -59,10 +60,12 @@ const IndivisualCard = ({
             <IconButton
               size="small"
               onClick={() => {
+                
                 setSelectedUser(user);
                 setFormData(user);
                 setIsEditing(true);
               }}
+              onClickCapture={resetForm}
               sx={{ mr: 1 }}
             >
               <EditIcon />
