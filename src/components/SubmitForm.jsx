@@ -75,7 +75,6 @@ const SubmitForm = ({isEditing, handleSubmit, formData, handleInputChange, reset
               <Button
                 variant="contained"
                 type="submit"
-                onClick={handleSubmit}
                 startIcon={isEditing ? <EditIcon /> : <AddIcon />}
                 sx={{ px: 4 }}
               >
