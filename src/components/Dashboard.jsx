@@ -70,7 +70,7 @@ const UserDashboard = () => {
       setIsLoading(true);
       if (isEditing && selectedUser) {
         const response = await fetch(
-          BACKEND_SERVER_BASE_ADDRESS.concat(`${selectedUser.id}`),
+          BACKEND_SERVER_BASE_ADDRESS.concat(`users/${selectedUser.id}`),
           {
             method: "PUT",
             body: JSON.stringify(formData),
