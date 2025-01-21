@@ -11,6 +11,8 @@
  * the value of USER_PER_PAGE.
  */
 
+const BACKEND_SERVER_BASE_ADDRESS = process.env.REACT_APP_BACKEND_BASEADDRESS;
+
 
 export const fetchInitialUsers = async (
   setUsers,
@@ -21,7 +23,7 @@ export const fetchInitialUsers = async (
   setSeverity
 ) => {
   try {
-    const response = await fetch("https://jsonplaceholder.typicode.com/users");
+    const response = await fetch(BACKEND_SERVER_BASE_ADDRESS.concat("users"));
     if (!response.ok) {
         setSeverity('error');
             throw new Error('Failed to fetch users');
