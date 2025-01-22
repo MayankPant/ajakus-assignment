@@ -24,6 +24,7 @@ import { fetchInitialUsers } from "../apis/fetchInitialUsers";
 import SearchBar from "./SearchBar";
 import SubmitForm from "./SubmitForm";
 import IndivisualCard from "./IndivisualCard";
+import { search } from "../utils/search";
 
 const USERS_PER_PAGE = 4;
 const BACKEND_SERVER_BASE_ADDRESS = process.env.REACT_APP_BACKEND_BASEADDRESS;
@@ -37,6 +38,8 @@ const UserDashboard = () => {
   const [severity, setSeverity] = useState("error");
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -214,7 +217,7 @@ const UserDashboard = () => {
             bgcolor: "white",
           }}
         >
-          <SearchBar />
+          <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         </Paper>
 
         <SubmitForm
@@ -265,7 +268,7 @@ const UserDashboard = () => {
         >
           <div className="userlist-wrapper">
             <Grid container spacing={3}>
-              {users.map((user) => (
+              {search(searchTerm, users).map((user) => (
                 <Grid item xs={12} md={6} key={user.id}>
                   <Card
                     elevation={0}
