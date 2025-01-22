@@ -25,10 +25,11 @@ import SearchBar from "./SearchBar";
 import SubmitForm from "./SubmitForm";
 import IndivisualCard from "./IndivisualCard";
 import { search } from "../utils/search";
+import "../css/UserDashboard.css";
 
 const USERS_PER_PAGE = 4;
 const BACKEND_SERVER_BASE_ADDRESS = process.env.REACT_APP_BACKEND_BASEADDRESS;
-console.log(BACKEND_SERVER_BASE_ADDRESS)
+console.log(BACKEND_SERVER_BASE_ADDRESS);
 const UserDashboard = () => {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
@@ -63,7 +64,7 @@ const UserDashboard = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: value.trim(),
     }));
   };
 
@@ -154,6 +155,7 @@ const UserDashboard = () => {
   };
 
   const resetForm = () => {
+    console.log("Data data reset");
     setFormData({
       firstName: "",
       lastName: "",
@@ -285,6 +287,7 @@ const UserDashboard = () => {
                       setFormData={setFormData}
                       setIsEditing={setIsEditing}
                       handleDelete={handleDelete}
+                      resetForm={resetForm}
                     />
                   </Card>
                 </Grid>
