@@ -43,10 +43,9 @@ const UserDashboard = () => {
 
 
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    name: "",
     email: "",
-    department: "",
+    company: "",
   });
 
   useEffect(() => {
@@ -157,8 +156,7 @@ const UserDashboard = () => {
   const resetForm = () => {
     console.log("Data data reset");
     setFormData({
-      firstName: "",
-      lastName: "",
+      name: '',
       email: "",
       department: "",
     });
@@ -270,6 +268,8 @@ const UserDashboard = () => {
         >
           <div className="userlist-wrapper">
             <Grid container spacing={3}>
+              {              console.log("Recieved search results",search(searchTerm, users))
+              }
               {search(searchTerm, users).map((user) => (
                 <Grid item xs={12} md={6} key={user.id}>
                   <Card
