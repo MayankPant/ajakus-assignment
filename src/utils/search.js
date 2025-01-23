@@ -5,10 +5,10 @@ export function search(searchTerm, users) {
 
   return users.filter((user) => {
     return (
-      user.firstname?.toLowerCase().includes(parsed) ||
-      user.lastname?.toLowerCase().includes(parsed) ||
+      user.name.split(" ")[0]?.toLowerCase().includes(parsed) ||
+      user.name.split(" ")[1].toLowerCase().includes(parsed) ||
       user.email?.toLowerCase().includes(parsed) ||
-      user.department?.toLowerCase().includes(parsed)
+      user.company.name?.toLowerCase().includes(parsed)
     );
   });
 }

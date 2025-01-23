@@ -29,6 +29,7 @@ export const fetchInitialUsers = async (
             throw new Error('Failed to fetch users');
     }
     const data = await response.json();
+    console.log("Received data: ", data);
     setSeverity('success');
     // Simulate pagination by slicing the initial data
     setUsers(data.slice(0, USERS_PER_PAGE));

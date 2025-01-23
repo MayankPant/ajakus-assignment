@@ -17,7 +17,7 @@ import { getInitials } from "../utils/getInitials";
 
 const IndivisualCard = ({
   user,
-  setSelectedUser,
+  handleSelectedUser,
   setFormData,
   setIsEditing,
   handleDelete,
@@ -34,11 +34,11 @@ const IndivisualCard = ({
             mr: 2,
           }}
         >
-          {getInitials(user.firstName, user.lastName)}
+          {getInitials(user.name.split(' ')[0], user.name.split(' ')[1])}
         </Avatar>
         <Box>
           <Typography variant="h6">
-            {user.firstName} {user.lastName}
+            {user.name.split(' ')[0]} {user.name.split(' ')[1]}
           </Typography>
           <Typography color="textSecondary" variant="body2">
             {user.email}
@@ -48,7 +48,7 @@ const IndivisualCard = ({
       <Divider sx={{ my: 2 }} />
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Chip
-          label={user.department}
+          label={user.company.name}
           size="small"
           sx={{
             bgcolor: "primary.light",
@@ -61,11 +61,11 @@ const IndivisualCard = ({
               size="small"
               onClick={() => {
                 
-                setSelectedUser(user);
+                handleSelectedUser(user);
                 setFormData(user);
                 setIsEditing(true);
               }}
-              onClickCapture={resetForm}
+
               sx={{ mr: 1 }}
             >
               <EditIcon />
