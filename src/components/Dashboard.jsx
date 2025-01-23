@@ -43,10 +43,35 @@ const UserDashboard = () => {
 
 
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    company: "",
+    firstName: '',
+      lastName: '',
+      name: "",
+      email: "",
+      department: "",
+      company: {
+        name: ""
+      }
   });
+
+  const handleSelectedUser = (user) => {
+      const firstName = user.name.split(" ")[0];
+      const lastName = user.name.split(" ")[1];
+      const department = user.company.name;
+      user.firstName = firstName;
+      user.lastName = lastName;
+      user.department = department;
+      const formData = {
+        firstName: firstName,
+        lastName: lastName,
+        email: user.email,
+        department: department,
+        company: {
+          name: department
+        }
+      };
+      setFormData(formData);
+      setSelectedUser(user);
+  }
 
   useEffect(() => {
     fetchInitialUsers(
@@ -63,7 +88,7 @@ const UserDashboard = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value.trim(),
+      [name]: value,
     }));
   };
 
@@ -72,6 +97,8 @@ const UserDashboard = () => {
     try {
       setIsLoading(true);
       if (isEditing && selectedUser) {
+        formData.name = formData.firstName + " " + formData.lastName;
+        formData.company.name = formData.department;
         const response = await fetch(
           BACKEND_SERVER_BASE_ADDRESS.concat(`users/${selectedUser.id}`),
           {
@@ -92,6 +119,8 @@ const UserDashboard = () => {
         setSeverity("success");
         setIsLoading(false);
       } else {
+        formData.name = formData.firstName + " " + formData.lastName;
+        formData.company.name = formData.department;
         setIsLoading(true);
         const response = await fetch(
           BACKEND_SERVER_BASE_ADDRESS.concat("users"),
@@ -156,9 +185,14 @@ const UserDashboard = () => {
   const resetForm = () => {
     console.log("Data data reset");
     setFormData({
-      name: '',
+      firstName: '',
+      lastName: '',
+      name: "",
       email: "",
       department: "",
+      company: {
+        name: ""
+      }
     });
     setSelectedUser(null);
     setIsEditing(false);
@@ -283,7 +317,7 @@ const UserDashboard = () => {
                   >
                     <IndivisualCard
                       user={user}
-                      setSelectedUser={setSelectedUser}
+                      handleSelectedUser={handleSelectedUser}
                       setFormData={setFormData}
                       setIsEditing={setIsEditing}
                       handleDelete={handleDelete}

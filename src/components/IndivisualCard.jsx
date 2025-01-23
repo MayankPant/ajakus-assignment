@@ -17,7 +17,7 @@ import { getInitials } from "../utils/getInitials";
 
 const IndivisualCard = ({
   user,
-  setSelectedUser,
+  handleSelectedUser,
   setFormData,
   setIsEditing,
   handleDelete,
@@ -61,11 +61,11 @@ const IndivisualCard = ({
               size="small"
               onClick={() => {
                 
-                setSelectedUser(user);
+                handleSelectedUser(user);
                 setFormData(user);
                 setIsEditing(true);
               }}
-              onClickCapture={resetForm}
+
               sx={{ mr: 1 }}
             >
               <EditIcon />
