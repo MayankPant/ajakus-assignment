@@ -40,38 +40,38 @@ const UserDashboard = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-
+  const [reload, setReload] = useState(false);
 
   const [formData, setFormData] = useState({
-    firstName: '',
-      lastName: '',
+    firstName: "",
+    lastName: "",
+    name: "",
+    email: "",
+    department: "",
+    company: {
       name: "",
-      email: "",
-      department: "",
-      company: {
-        name: ""
-      }
+    },
   });
 
   const handleSelectedUser = (user) => {
-      const firstName = user.name.split(" ")[0];
-      const lastName = user.name.split(" ")[1];
-      const department = user.company.name;
-      user.firstName = firstName;
-      user.lastName = lastName;
-      user.department = department;
-      const formData = {
-        firstName: firstName,
-        lastName: lastName,
-        email: user.email,
-        department: department,
-        company: {
-          name: department
-        }
-      };
-      setFormData(formData);
-      setSelectedUser(user);
-  }
+    const firstName = user.name.split(" ")[0];
+    const lastName = user.name.split(" ")[1];
+    const department = user.company.name;
+    user.firstName = firstName;
+    user.lastName = lastName;
+    user.department = department;
+    const formData = {
+      firstName: firstName,
+      lastName: lastName,
+      email: user.email,
+      department: department,
+      company: {
+        name: department,
+      },
+    };
+    setFormData(formData);
+    setSelectedUser(user);
+  };
 
   useEffect(() => {
     fetchInitialUsers(
@@ -182,17 +182,31 @@ const UserDashboard = () => {
     setIsLoading(false);
   };
 
+  const handleReload = () => {
+    setPage(1);
+    setHasMore(true);
+    setUsers([]); // Reset the users array before fetching initial users
+    fetchInitialUsers(
+      setUsers,
+      setHasMore,
+      setError,
+      setIsLoading,
+      USERS_PER_PAGE,
+      setSeverity
+    );
+  };
+
   const resetForm = () => {
     console.log("Data data reset");
     setFormData({
-      firstName: '',
-      lastName: '',
+      firstName: "",
+      lastName: "",
       name: "",
       email: "",
       department: "",
       company: {
-        name: ""
-      }
+        name: "",
+      },
     });
     setSelectedUser(null);
     setIsEditing(false);
@@ -233,7 +247,11 @@ const UserDashboard = () => {
                 )
               }
             >
-              <RefreshIcon />
+              <Tooltip title="Refresh">
+                <IconButton color="inherit" onClick={handleReload}>
+                  <RefreshIcon />
+                </IconButton>
+              </Tooltip>
             </IconButton>
           </Tooltip>
         </Toolbar>
@@ -276,6 +294,7 @@ const UserDashboard = () => {
 
         <InfiniteScroll
           dataLength={users.length}
+          key={reload}
           next={() => {
             fetchMoreUsers(
               page,
@@ -302,8 +321,10 @@ const UserDashboard = () => {
         >
           <div className="userlist-wrapper">
             <Grid container spacing={3}>
-              {              console.log("Recieved search results",search(searchTerm, users))
-              }
+              {console.log(
+                "Recieved search results",
+                search(searchTerm, users)
+              )}
               {search(searchTerm, users).map((user) => (
                 <Grid item xs={12} md={6} key={user.id}>
                   <Card
